@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    {{-- select2  --}}
+    @stack('custom-css')
+
 </head>
 <body>
     <div id="app">
@@ -79,5 +83,7 @@
             @yield('content')
         </main>
     </div>
+    {{-- select 2 js  --}}
+    @stack('custom-js')
 </body>
 </html>
