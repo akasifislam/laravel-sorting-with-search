@@ -9,7 +9,7 @@ class Comment extends Model
 {
     use HasFactory;
 
-    public function commentTable()
+    public function commentable()
     {
         return $this->morphTo();
     }

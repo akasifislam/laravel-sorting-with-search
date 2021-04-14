@@ -15,10 +15,19 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $data['categories'] = Category::orderBy('id', 'DESC')->get();
         $post_query = Post::where('user_id', Auth::user()->id);
+        if ($request->category) {
+            $post_query->whereHas('category', function ($qb) use ($request) {
+                $qb->where('name', $request->category);
+            });
+        }
+        if ($request->keyword) {
+            $post_query->where('title', 'LIKE', '%' . $request->keyword . '%');
+        }
+        $data['posts'] = $post_query->orderBy('id', 'DESC')->paginate(2);
         return view('post.index', $data);
     }
 
@@ -77,7 +86,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        return $id;
     }
 
     /**
@@ -88,7 +97,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        return $id;
     }
 
     /**

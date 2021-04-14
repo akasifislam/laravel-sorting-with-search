@@ -21,10 +21,10 @@
                             <select class="form-control" name="category" id="category_filter">
                                 <option value="">Select Category</option>
                                 @if(count($categories))
-                                        @foreach($categories as $category)
-                                           <option value="{{$category->name}}">{{$category->name}}</option>
-                                        @endforeach
-                                      @endif
+                                    @foreach($categories as $category)
+                                    <option value="{{$category->name}}">{{$category->name}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                             <label for="keyword">&nbsp;&nbsp;</label>
                             <input type="text" class="form-control" name="keyword" placeholder="Enter keyword" id="keyword">
@@ -49,20 +49,28 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <th scope="row">1</th>
-                                <td style="width: 400px" class="text-center">Mark</td>
-                                <td>Otto</td>
-                                <td>Otto</td>
-                                <td>Otto</td>
-                                <td style="width: 200px">
-                                    <div class="btn-group" role="group">
-                                        <a href="" class="btn btn-success btn-sm">view</a>
-                                        <a href="" class="btn btn-primary btn-sm">edit</a>
-                                        <a href="" class="btn btn-danger btn-sm">delete</a>
-                                    </div>
-                                </td>
-                              </tr>
+                                @if(count($posts))
+                                    @foreach($posts as $post)
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>{{ $post->title }}</td>
+                                        <td style="width: 400px" class="text-center">{{ $post->user->name }}</td>
+                                        <td>{{ $post->category->name }}</td>
+                                        <td>3232</td>
+                                        <td style="width: 200px">
+                                            <div class="btn-group" role="group">
+                                                <a href="{{ route('app.post.show',$post->id) }}" class="btn btn-success btn-sm">view</a>
+                                                <a href="{{ route('app.post.edit',$post->id) }}" class="btn btn-primary btn-sm">edit</a>
+                                                <a href="" class="btn btn-danger btn-sm">delete</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan="6">No post found</td>
+                                    </tr>
+                                @endif
                             </tbody>
                           </table>
                     </div>
