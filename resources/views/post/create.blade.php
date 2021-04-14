@@ -23,53 +23,57 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="title">Title</label>
-                                    <input class="form-control" type="text" name="title" id="title" placeholder="Enter Title">
+                                    <input class="form-control" value="{{ old('title') }}" type="text" name="title" id="title" placeholder="Enter Title">
                                     @if ($errors->any('title'))
                                         <span class="text-danger">{{ $errors->first('title')  }}</span>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
-                                    <textarea class="form-control" type="text" name="description" id="description" placeholder="Enter description"></textarea>
+                                    <textarea class="form-control"  type="text" name="description" id="description" placeholder="Enter description">{{ old('description') }}</textarea>
                                     @if ($errors->any('description'))
                                         <span class="text-danger">{{ $errors->first('description')  }}</span>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="image">Image</label>
-                                    <input class="form-control" type="file" name="image" id="image">
+                                    <input class="form-control" value="{{ old('image') }}" type="file" name="image" id="image">
                                     @if ($errors->any('image'))
                                         <span class="text-danger">{{ $errors->first('image')  }}</span>
                                     @endif
                                 </div>
                                 <div class="form-group">
-                                    <label for="category">Category</label>
-                                   <select class="form-control" name="category selectkoro" id="category">
-                                        <option value=""> ---select--- </option>
-                                        @if (count($categories))
-                                            @foreach ($categories as $key => $category)
-                                                <option value="{{ $key+1 }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        @endif
-                                   </select>
-                                   @if ($errors->any('category'))
-                                        <span class="text-danger">{{ $errors->first('category')  }}</span>
+                                    <label for="category">Category :</label>
+                                    <select class="form-control" id="category" name="category">
+                                      <option value="">Select Category</option>
+              
+                                      @if(count($categories))
+                                        @foreach($categories as $category)
+                                           <option value="{{$category->id}}"  {{(old('category') && old('category')==$category->id )?'selected':''}}  >{{$category->name}}</option>
+                                        @endforeach
+                                      @endif
+                                      
+                                    </select>
+                                  @if($errors->any('category'))
+                                      <span class="text-danger"> {{$errors->first('category')}}</span>
                                     @endif
-                                </div>
-                                <div class="form-group">
-                                    <label for="tags">Tag</label>
-                                   <select class="js-example-basic-single form-control" name="tag[]" id="tags">
-                                        <option value=""> ----select---- </option>
-                                        @if (count($tags))
-                                            @foreach ($tags as $key=>$tag)
-                                                <option value="{{ $key+1 }}">{{ $tag->name }}</option>
-                                            @endforeach
-                                        @endif
-                                   </select>
-                                   @if ($errors->any('tags'))
-                                        <span class="text-danger">{{ $errors->first('tags')  }}</span>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="tags">Tags :</label>
+                                    <select class="form-control" id="tags" name="tags[]" >
+                                      <option value="">Select Tags</option>
+                                        @if(count($tags))
+                                        @foreach($tags as $tag)
+                                           <option value="{{$tag->id}}" 
+              {{(old('tags') && in_array($tag->id,old('tags')) )?'selected':''}} 
+                                           >{{$tag->name}}</option>
+                                        @endforeach
+                                      @endif
+                                    </select>
+                                             @if($errors->any('tags'))
+                                      <span class="text-danger"> {{$errors->first('tags')}}</span>
                                     @endif
-                                </div>
+                                  </div>
                                 <button type="submit" class="btn btn-primary btn-sm">save</button>
                             </form>
                         </div>
@@ -83,8 +87,13 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('.selectkoro').select2();
-    });
-</script>
+    $("#category").select2({
+       placeholder: "Select a category",
+       allowClear: true
+     });
+     $("#tags").select2({
+       placeholder: "Select tags",
+       allowClear: true
+     });
+   </script>
 @endpush

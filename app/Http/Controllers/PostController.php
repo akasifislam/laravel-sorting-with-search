@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -15,7 +17,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('post.index');
+        $data['categories'] = Category::orderBy('id', 'DESC')->get();
+        $post_query = Post::where('user_id', Auth::user()->id);
+        return view('post.index', $data);
     }
 
     /**
@@ -44,8 +48,25 @@ class PostController extends Controller
             'image' => 'required|image|mimes:png,jpg',
             'category' => 'required',
             'tags' => 'required',
+        ], [
+            'category.required' => 'please select a category',
+            'tags.required' => 'please select a tags',
         ]);
-        return $request;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $image_name = time() . '.' . $image->extension();
+            $image->move(public_path('posts_images'), $image_name);
+        }
+        $post = Post::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' => $image_name,
+            'user_id' => Auth::user()->id,
+            'category_id' => $request->category,
+        ]);
+
+        $post->tags()->sync($request->tags);
+        return redirect()->route('app.post.index')->with('success', 'post successfully created');
     }
 
     /**

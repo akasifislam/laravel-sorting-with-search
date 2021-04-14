@@ -20,6 +20,11 @@
                             <label for="category_filter">Filter By Category &nbsp;</label>
                             <select class="form-control" name="category" id="category_filter">
                                 <option value="">Select Category</option>
+                                @if(count($categories))
+                                        @foreach($categories as $category)
+                                           <option value="{{$category->name}}">{{$category->name}}</option>
+                                        @endforeach
+                                      @endif
                             </select>
                             <label for="keyword">&nbsp;&nbsp;</label>
                             <input type="text" class="form-control" name="keyword" placeholder="Enter keyword" id="keyword">
@@ -36,17 +41,17 @@
                             <thead>
                               <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Last</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">CreatedBY</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Total Comments</th>
                                 <th scope="col">Action</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr>
                                 <th scope="row">1</th>
-                                <td>Mark</td>
+                                <td style="width: 400px" class="text-center">Mark</td>
                                 <td>Otto</td>
                                 <td>Otto</td>
                                 <td>Otto</td>
