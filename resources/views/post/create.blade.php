@@ -24,18 +24,27 @@
                                 <div class="form-group">
                                     <label for="title">Title</label>
                                     <input class="form-control" type="text" name="title" id="title" placeholder="Enter Title">
+                                    @if ($errors->any('title'))
+                                        <span class="text-danger">{{ $errors->first('title')  }}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="description">Description</label>
                                     <textarea class="form-control" type="text" name="description" id="description" placeholder="Enter description"></textarea>
+                                    @if ($errors->any('description'))
+                                        <span class="text-danger">{{ $errors->first('description')  }}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="image">Image</label>
                                     <input class="form-control" type="file" name="image" id="image">
+                                    @if ($errors->any('image'))
+                                        <span class="text-danger">{{ $errors->first('image')  }}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="category">Category</label>
-                                   <select class="form-control" name="category" id="category">
+                                   <select class="form-control" name="category selectkoro" id="category">
                                         <option value=""> ---select--- </option>
                                         @if (count($categories))
                                             @foreach ($categories as $key => $category)
@@ -43,6 +52,9 @@
                                             @endforeach
                                         @endif
                                    </select>
+                                   @if ($errors->any('category'))
+                                        <span class="text-danger">{{ $errors->first('category')  }}</span>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label for="tags">Tag</label>
@@ -54,6 +66,9 @@
                                             @endforeach
                                         @endif
                                    </select>
+                                   @if ($errors->any('tags'))
+                                        <span class="text-danger">{{ $errors->first('tags')  }}</span>
+                                    @endif
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-sm">save</button>
                             </form>
@@ -65,13 +80,11 @@
     </div>
 </div>
 @endsection
-@push('custom-js')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script> --}}
+@push('js')
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
+<script type="text/javascript">
     $(document).ready(function() {
-    $('#category').select2();
-});
+        $('.selectkoro').select2();
+    });
 </script>
 @endpush
