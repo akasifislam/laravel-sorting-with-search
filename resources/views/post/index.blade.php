@@ -27,11 +27,11 @@
                                 @endif
                             </select>
                             <label for="keyword">&nbsp;&nbsp;</label>
-                            <input type="text" class="form-control" name="keyword" placeholder="Enter keyword" id="keyword">
+                            <input type="text" class="form-control" name="keyword" placeholder="Enter keyword" id="keyword_filter">
                             <span>&nbsp;</span>
                             <span>&nbsp;</span>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary btn-sm">search</button>
+                                <button type="button" onclick="search_post()" class="btn btn-primary btn-sm">search</button>
                                 <a href="" class="btn btn-info btn-sm">clear</a>
                             </div>
                         </form>
@@ -68,7 +68,7 @@
                                     @endforeach
                                     @else
                                     <tr>
-                                        <td colspan="6">No post found</td>
+                                        <td class="text-center text-white bg-danger" colspan="6">No post found</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -80,3 +80,15 @@
     </div>
 </div>
 @endsection
+
+@push('js')
+    <script type="text/javascript">
+        var query=<?php echo json_encode((object)Request::query()); ?>;
+        function search_post() {
+            Object.assign(query,{'category': $('#category_filter').val()})
+            Object.assign(query,{'keyword': $('#keyword_filter').val()})
+
+            window.location.href = "{{ route('app.post.index') }}?"+$.param(query);
+        }
+    </script>
+@endpush

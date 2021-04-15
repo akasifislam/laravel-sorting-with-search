@@ -27,7 +27,7 @@ class PostController extends Controller
         if ($request->keyword) {
             $post_query->where('title', 'LIKE', '%' . $request->keyword . '%');
         }
-        $data['posts'] = $post_query->orderBy('id', 'DESC')->paginate(2);
+        $data['posts'] = $post_query->orderBy('id', 'DESC')->paginate(10);
         return view('post.index', $data);
     }
 
