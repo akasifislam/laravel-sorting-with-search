@@ -18,7 +18,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $data['categories'] = Category::orderBy('id', 'DESC')->get();
-        $post_query = Post::where('user_id', Auth::user()->id);
+        $post_query = Post::withCount('comments')->where('user_id', Auth::user()->id);
         if ($request->category) {
             $post_query->whereHas('category', function ($qb) use ($request) {
                 $qb->where('name', $request->category);

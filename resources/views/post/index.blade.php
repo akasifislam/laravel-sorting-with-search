@@ -22,7 +22,7 @@
                                 <option value="">Select Category</option>
                                 @if(count($categories))
                                     @foreach($categories as $category)
-                                    <option value="{{$category->name}}">{{$category->name}}</option>
+<option value="{{$category->name}}" {{ (Request::query('category') && Request::query('category')== $category->name )? 'selected':'' }}  >{{$category->name}}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -32,12 +32,14 @@
                             <span>&nbsp;</span>
                             <div class="btn-group" role="group">
                                 <button type="button" onclick="search_post()" class="btn btn-primary btn-sm">search</button>
-                                <a href="" class="btn btn-info btn-sm">clear</a>
+                                @if (Request::query('category') || Request::query('keyword'))
+                                <a href="{{ route('app.post.index') }}" class="btn btn-info btn-sm">clear</a>
+                                @endif
                             </div>
                         </form>
                     </div>
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-hover table-bordered">
                             <thead>
                               <tr>
                                 <th scope="col">#</th>
@@ -50,13 +52,13 @@
                             </thead>
                             <tbody>
                                 @if(count($posts))
-                                    @foreach($posts as $post)
+                                    @foreach($posts as $key=>$post)
                                     <tr>
-                                        <th scope="row">1</th>
+                                        <th class="bg-info" scope="row">{{ $key+1 }}</th>
                                         <td>{{ $post->title }}</td>
                                         <td style="width: 400px" class="text-center">{{ $post->user->name }}</td>
                                         <td>{{ $post->category->name }}</td>
-                                        <td>3232</td>
+                                        <td>{{ $post->comments_count+2 }}</td>
                                         <td style="width: 200px">
                                             <div class="btn-group" role="group">
                                                 <a href="{{ route('app.post.show',$post->id) }}" class="btn btn-success btn-sm">view</a>
